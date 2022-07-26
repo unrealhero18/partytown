@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Partytown Test Page" />
+    <title>Element Style</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+          Apple Color Emoji, Segoe UI Emoji;
+        font-size: 12px;
+      }
+      h1 {
+        margin: 0 0 15px 0;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      a {
+        display: block;
+        padding: 16px 8px;
+      }
+      a:link,
+      a:visited {
+        text-decoration: none;
+        color: blue;
+      }
+      a:hover {
+        background-color: #eee;
+      }
+      li {
+        display: flex;
+        margin: 15px 0;
+      }
+      li strong,
+      li code,
+      li button {
+        white-space: nowrap;
+        flex: 1;
+        margin: 0 5px;
+      }
+    </style>
+    <script>
+      partytown = {
+        logCalls: true,
+        logGetters: true,
+        logSetters: true,
+        logStackTraces: false,
+        logScriptExecution: true,
+        logMainAccess: true,
+      };
+    </script>
+    <script src="/~partytown/debug/partytown.js"></script>
+  </head>
+  <body>
+    <h1>Element Style</h1>
+    <ul>
+      <li>
+        <strong>style.color set/get</strong>
+        <code id="testColor"></code>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testColor');
+            elm.style.color = 'red';
+            elm.textContent = elm.style.color;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>set style before appendChild</strong>
+        <code id="testBeforeAppendLabel"></code>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testBeforeAppendLabel');
+            const span = document.createElement('span');
+            span.id = 'testBeforeAppend';
+            span.style.color = 'green';
+            span.style.fontWeight = '800';
+            span.textContent = span.style.color;
+            elm.appendChild(span);
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>get existing style</strong>
+        <code id="testGetExisting" style="color: blue"></code>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testGetExisting');
+            elm.textContent = elm.style.color;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>setProperty()/getPropertyValue()</strong>
+        <code id="testSetGetProperty"></code>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testSetGetProperty');
+            elm.style.setProperty('color', 'purple', 'important');
+            elm.textContent =
+              elm.style.getPropertyValue('color') + ' ' + elm.style.getPropertyPriority('color');
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>removeProperty()</strong>
+        <code id="testRemoveProperty" style="color: red"></code>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testRemoveProperty');
+            elm.style.removeProperty('color');
+            elm.textContent = '"' + elm.style.getPropertyValue('color') + '"';
+          })();
+        </script>
+      </li>
+
+      <script type="text/partytown">
+        document.body.classList.add('completed');
+      </script>
+    </ul>
+
+    <hr />
+    <p><a href="/tests/">All Tests</a></p>
+  </body>
+</html>

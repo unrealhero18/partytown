@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Atomics COEP/COOP Headers" />
+
+    <title>Atomics COEP/COOP Headers</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+          Apple Color Emoji, Segoe UI Emoji;
+        font-size: 12px;
+      }
+      h1 {
+        margin: 0 0 15px 0;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      nav a {
+        display: block;
+        padding: 16px 8px;
+      }
+      nav a:link,
+      nav a:visited {
+        text-decoration: none;
+        color: blue;
+      }
+      nav a:hover {
+        background-color: #eee;
+      }
+      li {
+        display: flex;
+        margin: 15px 0;
+      }
+      li strong,
+      li code,
+      li button {
+        white-space: nowrap;
+        flex: 1;
+        margin: 0 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Atomics COEP/COOP Headers</h1>
+
+    <div>
+      <h2>Cross-Origin-Embedder-Policy (COEP)</h2>
+
+      <p>
+        <code id="type">👾</code>
+        <span id="result">👽</span>
+      </p>
+    </div>
+
+    <p id="ua"></p>
+
+    <nav>
+      <p>
+        <a id="otherlink" href="#"></a>
+      </p>
+      <p>
+        <a href="/atomics">Atomics Documentation</a>
+      </p>
+      <p><a href="/tests/">All Tests</a></p>
+    </nav>
+
+    <script>
+      try {
+        const typeSpan = document.getElementById('type');
+        const resultSpan = document.getElementById('result');
+        const link = document.getElementById('otherlink');
+
+        if (location.search.includes('require-corp')) {
+          typeSpan.textContent = 'require-corp';
+          link.textContent = 'Test COEP "credentialless"';
+          link.href = location.pathname;
+        } else {
+          typeSpan.textContent = 'credentialless';
+          link.textContent = 'Test COEP "require-corp"';
+          link.href = location.pathname + '?coep=require-corp';
+        }
+
+        if (window.crossOriginIsolated) {
+          resultSpan.innerHTML = '✅';
+        } else {
+          resultSpan.innerHTML = '❌';
+        }
+
+        document.getElementById('ua').textContent = navigator.userAgent;
+      } catch (e) {
+        alert(e);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Partytown Test Page" />
+    <title>Canvas</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+          Apple Color Emoji, Segoe UI Emoji;
+        font-size: 12px;
+      }
+      h1 {
+        margin: 0 0 15px 0;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      a {
+        display: block;
+        padding: 16px 8px;
+      }
+      a:link,
+      a:visited {
+        text-decoration: none;
+        color: blue;
+      }
+      a:hover {
+        background-color: #eee;
+      }
+      li {
+        display: flex;
+        margin: 15px 0;
+      }
+      li strong,
+      li code,
+      li button {
+        white-space: nowrap;
+        flex: 1;
+        margin: 0 5px;
+      }
+    </style>
+    <script>
+      partytown = {
+        logCalls: true,
+        logGetters: true,
+        logSetters: true,
+        logStackTraces: false,
+        logScriptExecution: true,
+      };
+    </script>
+    <script src="/~partytown/debug/partytown.js"></script>
+  </head>
+  <body>
+    <h1>Canvas</h1>
+    <ul>
+      <li>
+        <strong>getContext('2d').canvas</strong>
+        <code id="testGetContext2dCanvas"></code>
+        <script type="text/partytown">
+          (function () {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const elm = document.getElementById('testGetContext2dCanvas');
+            elm.textContent = ctx.canvas.tagName;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>ctx.measureText('text')</strong>
+        <code id="testMeasureText"></code>
+        <script type="text/partytown">
+          (function () {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            const metrics = ctx.measureText('SomeText');
+            if (typeof metrics.width === 'number') {
+              const elm = document.getElementById('testMeasureText');
+              elm.textContent = metrics.width;
+            }
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>rect/fillStyle/fill</strong>
+        <code id="testFillStyle"></code>
+        <canvas id="canvasFill"></canvas>
+        <script type="text/partytown">
+          (function () {
+            const canvas = document.getElementById('canvasFill');
+            const ctx = canvas.getContext('2d');
+            ctx.rect(0, 0, 50, 50);
+            ctx.fillStyle = 'blue';
+            ctx.fill();
+
+            const ctx2 = canvas.getContext('2d');
+            const elm = document.getElementById('testFillStyle');
+            elm.textContent = ctx2.fillStyle;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>createRadialGradient/addColorStop</strong>
+        <code id="testCreateRadialGradient"></code>
+        <script type="text/partytown">
+          (function () {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            const gradient = ctx.createRadialGradient(100, 90, 20, 90, 90, 100);
+            gradient.addColorStop(0, 'red');
+            gradient.addColorStop(0.9, 'white');
+            gradient.addColorStop(1, 'blue');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 50, 50);
+
+            const elm = document.getElementById('testCreateRadialGradient');
+            elm.parentNode.insertBefore(canvas, elm.nextSibling);
+            elm.textContent = ctx.fillStyle.constructor.name;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>getContext('webgl').canvas</strong>
+        <code id="testGetContextWebGLCanvas"></code>
+        <script type="text/partytown">
+          (function () {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('webgl');
+            const elm = document.getElementById('testGetContextWebGLCanvas');
+            elm.textContent = ctx.canvas.tagName;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>info.UNMASKED_RENDERER_WEBGL</strong>
+        <code id="testWebGLRenderInfo"></code>
+        <script type="text/partytown">
+          (function () {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('webgl');
+            const info = ctx.getExtension('WEBGL_debug_renderer_info');
+            const renderer = ctx.getParameter(info.UNMASKED_RENDERER_WEBGL);
+            const elm = document.getElementById('testWebGLRenderInfo');
+            elm.textContent = renderer;
+          })();
+        </script>
+      </li>
+
+      <script type="text/partytown">
+        (function () {
+          document.body.classList.add('completed');
+        })();
+      </script>
+    </ul>
+
+    <hr />
+    <p><a href="/tests/">All Tests</a></p>
+  </body>
+</html>

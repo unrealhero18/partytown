@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Partytown Test Page" />
+    <title>Anchor</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+          Apple Color Emoji, Segoe UI Emoji;
+        font-size: 12px;
+      }
+      h1 {
+        margin: 0 0 15px 0;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      a {
+        display: block;
+        padding: 16px 8px;
+      }
+      a:link,
+      a:visited {
+        text-decoration: none;
+        color: blue;
+      }
+      a:hover {
+        background-color: #eee;
+      }
+      strong a {
+        display: inline-block;
+      }
+      li {
+        display: flex;
+        margin: 15px 0;
+      }
+      li strong,
+      li code,
+      li button,
+      li a {
+        white-space: nowrap;
+        flex: 1;
+        margin: 0 5px;
+        padding: 0;
+      }
+    </style>
+    <script>
+      partytown = {
+        logCalls: true,
+        logGetters: true,
+        logSetters: true,
+        logStackTraces: false,
+        logScriptExecution: true,
+      };
+    </script>
+    <script src="/~partytown/debug/partytown.js"></script>
+  </head>
+  <body>
+    <h1>Anchor</h1>
+
+    <ul>
+      <li>
+        <strong>set/get a.href</strong>
+        <div><a id="testAnchor"></a></div>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testAnchor');
+            elm.className = 'testAnchor';
+            elm.href = './some/other/path';
+            elm.textContent = elm.pathname;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>constructor.name</strong>
+        <div><a id="testAnchorConstructor"></a></div>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testAnchorConstructor');
+            elm.className = 'testAnchorConstructor';
+            elm.textContent = elm.constructor.name + ' ' + HTMLAnchorElement.name;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>createElement('a'), no appendChild</strong>
+        <div id="testCreateAnchorNoAppend"></div>
+        <script type="text/partytown">
+          (function () {
+            const a = document.createElement('a');
+            a.href = './no-append-child';
+
+            const elm = document.getElementById('testCreateAnchorNoAppend');
+            elm.className = 'testCreateAnchorNoAppend';
+            elm.textContent = a.pathname;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>createElement('a'), appendChild</strong>
+        <div id="testCreateAnchorAppend"></div>
+        <script type="text/partytown">
+          (function () {
+            const a = document.createElement('a');
+            a.href = './append-child';
+            a.innerHTML = a.pathname;
+
+            const elm = document.getElementById('testCreateAnchorAppend');
+            elm.appendChild(a);
+            elm.className = 'testCreateAnchorAppend';
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>innerHTML firstChild</strong>
+        <div id="testInnerHtmlFirstChild"></div>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testInnerHtmlFirstChild');
+
+            const div = document.createElement('div');
+            div.innerHTML = "<a href='#'></a>";
+
+            const firstChild = div.firstChild;
+            const href = firstChild.getAttribute('href');
+
+            elm.textContent = href;
+            elm.className = 'testInnerHtmlFirstChild';
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>get <a id="getHref" href="https://builder.io/">href</a></strong>
+        <div id="testGetHref"></div>
+        <script type="text/partytown">
+          (function () {
+            const a = document.getElementById('getHref');
+            const elm = document.getElementById('testGetHref');
+            elm.textContent = a.href;
+            elm.className = 'testGetHref';
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>set <a id="setHref" href="/">href</a></strong>
+        <div id="testSetHref"></div>
+        <script type="text/partytown">
+          (function () {
+            const a = document.getElementById('setHref');
+            a.href = '/pathname';
+            const elm = document.getElementById('testSetHref');
+            elm.textContent = a.pathname;
+            elm.className = 'testSetHref';
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>set <a id="setHref2" href="/">href</a> 2</strong>
+        <div id="testSetHref2"></div>
+        <script type="text/partytown">
+          (function () {
+            const a = document.getElementById('setHref');
+            a.href = 'http://builder.io/pathname';
+            a.href = '/local-pathname';
+            const elm = document.getElementById('testSetHref2');
+            elm.textContent = a.href;
+            elm.className = 'testSetHref2';
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>get <a id="getSearch" href="https://builder.io/?a=42&b=23">search</a></strong>
+        <div>
+          <strong>search:</strong><span id="testGetSearch"></span>
+          <strong>href:</strong><span id="testGetSearchHref"></span>
+        </div>
+        <script type="text/partytown">
+          (function () {
+            const a = document.getElementById('getSearch');
+
+            const elmHref = document.getElementById('testGetSearchHref');
+            elmHref.textContent = a.href;
+
+            const elm = document.getElementById('testGetSearch');
+            elm.textContent = a.search;
+            elm.className = 'testGetSearch';
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>set <a id="setSearch" href="https://builder.io/?a=42&b=23">search</a></strong>
+        <div>
+          <strong>search:</strong><span id="testSetSearch"></span>
+          <strong>href:</strong><span id="testSetSearchHref"></span>
+        </div>
+        <script type="text/partytown">
+          (function () {
+            const a = document.getElementById('setSearch');
+            a.search = '?x=1&y=2';
+
+            const elmHref = document.getElementById('testSetSearchHref');
+            elmHref.textContent = a.href;
+
+            const elm = document.getElementById('testSetSearch');
+            elm.textContent = a.search;
+            elm.className = 'testSetSearch';
+          })();
+        </script>
+      </li>
+    </ul>
+
+    <hr />
+    <p><a href="/tests/">All Tests</a></p>
+  </body>
+</html>

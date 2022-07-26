@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Partytown Test Page" />
+    <title>Services Benchmark</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+          Apple Color Emoji, Segoe UI Emoji;
+        font-size: 12px;
+      }
+      h1 {
+        margin: 0 0 10px 0;
+      }
+      #output {
+        font-size: 8px;
+      }
+      table {
+        border-spacing: 0;
+      }
+      td,
+      th {
+        white-space: nowrap;
+        padding: 8px 12px;
+        text-align: center;
+      }
+      th {
+        padding: 4px 10px;
+        text-align: left;
+      }
+      th button {
+        font-size: 9px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      th button:hover {
+        color: blue;
+        border-color: blue;
+      }
+      th {
+        background: #eee;
+        font-size: 9px;
+      }
+      td:first-child,
+      th:first-child {
+        text-align: left;
+      }
+      label {
+        display: block;
+        padding: 2px 4px;
+        cursor: pointer;
+      }
+      input {
+        cursor: pointer;
+      }
+      #pagespeed {
+        padding: 4px 14px;
+        background: #eee;
+        border: 1px solid gray;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+        color: black;
+      }
+      #pagespeed:hover {
+        color: blue;
+        border-color: blue;
+      }
+      label {
+        margin: 0;
+        padding: 0;
+      }
+      label span {
+        position: relative;
+      }
+      label span input {
+        position: absolute;
+        margin: 1px 0 0 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Services Benchmark</h1>
+
+    <p>
+      Combine various services together on this page so it can be page speed tested. "Standard" runs
+      the service as a traditional script, and "Partytown" will run it with "text/partytown". Debug
+      Mode uses Partytown's debug script, which has no minification, the web worker is not inlined,
+      and prints more console logs.
+    </p>
+
+    <template id="al">
+      <script>
+        (function () {
+          console.log('Adobe Launch');
+          var script = document.createElement('script');
+          script.async = true;
+          script.src =
+            // 'https://assets.adobedtm.com/0d863d487334/1df1eade08c2/launch-d4935864d5f5.min.js';
+            '/integrations/adobe-launch/launch-d4935864d5f5.min.js';
+          document.head.appendChild(script);
+        })();
+      </script>
+    </template>
+
+    <template id="fbp">
+      <script>
+        !(function (f, b, e, v, n, t, s) {
+          console.log('Facebook Pixel');
+          n = f.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = !0;
+          n.version = '2.0';
+          n.queue = [];
+          t = b.createElement(e);
+          t.async = !0;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '166730740625110');
+        fbq('track', 'PageView');
+      </script>
+    </template>
+
+    <template id="gtm">
+      <script>
+        (function (window, document, i) {
+          console.log('Google Tag Manager');
+          window['dataLayer'] = window[dataLayer] || [];
+          window['dataLayer'].push({ 'gtm.start': new Date().getTime(), 'event': 'gtm.js' });
+          var firstScript = document.getElementsByTagName('script')[0];
+          var gtmScript = document.createElement('script');
+          var dataLayer = 'dataLayer' != 'dataLayer' ? '&l=' + 'dataLayer' : '';
+          gtmScript.async = true;
+          gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dataLayer;
+          firstScript.parentNode.insertBefore(gtmScript, firstScript);
+        })(window, document, 'GTM-W275NLW');
+      </script>
+    </template>
+
+    <template id="hs">
+      <script>
+        (function () {
+          console.log('Hubspot');
+          var output = document.getElementById('output');
+
+          var hsScript = document.createElement('script');
+          hsScript.async = true;
+          hsScript.defer = true;
+          hsScript.id = 'hs-script-loader';
+          hsScript.src = '//js.hs-scripts.com/20632911.js';
+          output.appendChild(hsScript);
+        })();
+      </script>
+    </template>
+
+    <template id="tw">
+      <script>
+        (function () {
+          console.log('Twitter');
+          var output = document.getElementById('output');
+
+          var twitterBlockquote = document.createElement('blockquote');
+          twitterBlockquote.className = 'twitter-tweet';
+          twitterBlockquote.innerHTML = `<p lang="en" dir="ltr">How <a href="https://twitter.com/builderio?ref_src=twsrc%5Etfw">@builderio</a> cut 99% of their JavaScript with <a href="https://twitter.com/QwikDev?ref_src=twsrc%5Etfw">@QwikDev</a> + Partytown<a href="https://t.co/VhdljVdqrZ">https://t.co/VhdljVdqrZ</a> <a href="https://t.co/vb9VLu7vbJ">https://t.co/vb9VLu7vbJ</a></p>&mdash; Qwik WebDev Framework (@QwikDev) <a href="https://twitter.com/QwikDev/status/1468672275775950854?ref_src=twsrc%5Etfw">December 8, 2021</a>`;
+          output.appendChild(twitterBlockquote);
+
+          var twitterScript = document.createElement('script');
+          twitterScript.async = true;
+          twitterScript.src = 'https://platform.twitter.com/widgets.js';
+          output.appendChild(twitterScript);
+        })();
+      </script>
+    </template>
+
+    <template id="ws">
+      <script>
+        (function () {
+          console.log('Wistia');
+          var output = document.getElementById('output');
+
+          var wistiaVideo = document.createElement('div');
+          wistiaVideo.className = 'wistia_embed wistia_async_varrf62cw4 videoFoam=true';
+          wistiaVideo.style.width = '320px';
+          wistiaVideo.style.height = '180px';
+          output.appendChild(wistiaVideo);
+
+          window._wq = window._wq || [];
+
+          var wistiaScript = document.createElement('script');
+          wistiaScript.async = true;
+          wistiaScript.src = '//fast.wistia.com/assets/external/E-v1.js';
+          output.appendChild(wistiaScript);
+        })();
+      </script>
+    </template>
+
+    <template id="partytown">
+      <script>
+        partytown = {
+          resolveUrl(url, location) {
+            if (
+              url.hostname.includes('google-analytics') ||
+              url.hostname.includes('www.googletagmanager.com') ||
+              url.hostname.includes('connect.facebook.net') ||
+              url.hostname.includes('js.hs-scripts.com') ||
+              url.hostname.includes('js.hs-analytics.net') ||
+              url.hostname.includes('cdn.syndication.twimg.com') ||
+              url.hostname.includes('assets.adobedtm.com')
+            ) {
+              const proxyUrl = new URL('https://cdn.builder.io/api/v1/proxy-api');
+              proxyUrl.searchParams.append('url', url);
+              return proxyUrl;
+            }
+          },
+          forward: ['fbq', 'dataLayer.push', '_satellite.track', '_wq.push'],
+          globalFns: ['s_gi', 'AppMeasurement'],
+          debug: document.getElementById('debug-mode').checked,
+        };
+        /* Partytown 0.2.0 - MIT builder.io */
+        // prettier-ignore
+        !function(t,e,n,i,r,o,a,s,d,c,l,p){function u(){a=(o.lib||"/~partytown/")+(o.debug?"debug/":""),d=e.querySelectorAll('script[type="text/partytown"]'),i!=t?i.dispatchEvent(new CustomEvent("pt1",{detail:t})):d.length&&(s=setTimeout(f,1e4),e.addEventListener("pt0",g),r?h(1):n.serviceWorker?n.serviceWorker.register(a+"partytown-sw.js"+(r?"?isolated":""),{scope:a}).then((function(t){t.active?h():t.installing&&t.installing.addEventListener("statechange",(function(t){"activated"==t.target.state&&h()}))}),console.error):f())}function h(t){c=e.createElement(t?"script":"iframe"),t||(c.setAttribute("style","display:block;width:0;height:0;border:0;visibility:hidden"),c.setAttribute("aria-hidden",!0)),c.src=a+"partytown-"+(t?"atomics.js":"sandbox-sw.html?"+Date.now()),e.body.appendChild(c)}function f(t,n){for(g(),t=0;t<d.length;t++)(n=e.createElement("script")).innerHTML=d[t].innerHTML,e.head.appendChild(n)}function g(){clearTimeout(s)}o=t.partytown||{},i==t&&(o.forward||[]).map((function(e){l=t,e.split(".").map((function(e,n,i){l=l[i[n]]=n+1<i.length?"push"==i[n+1]?[]:l[i[n]]||{}:function(){(t._ptf=t._ptf||[]).push(i,arguments)}}))})),"complete"==e.readyState?u():t.addEventListener("load",u)}(window,document,navigator,top,top.crossOriginIsolated);
+      </script>
+    </template>
+
+    <table id="services">
+      <tr>
+        <th>Service</th>
+        <th>
+          <button data-type="p">Partytown</button>
+        </th>
+        <th>
+          <button data-type="s">Standard</button>
+        </th>
+        <th>
+          <button data-type="">Excluded</button>
+        </th>
+      </tr>
+    </table>
+
+    <p>
+      <a
+        id="pagespeed"
+        href="https://pagespeed.web.dev/"
+        target="_blank"
+        rel="noopener noreferrer"
+        hidden=""
+      >
+        ⏱ PageSpeed Insights
+      </a>
+    </p>
+
+    <p>
+      <label
+        >Debug Mode:
+        <span>
+          <input type="checkbox" id="debug-mode" />
+        </span>
+      </label>
+    </p>
+
+    <p id="user-agent"></p>
+
+    <p>
+      <span>crossOriginIsolated: </span>
+      <span id="cross-origin-isolated"></span>
+    </p>
+
+    <div id="output"></div>
+
+    <script>
+      (() => {
+        const services = [
+          { name: 'Adobe Launch', id: 'al' },
+          { name: 'Facebook Pixel', id: 'fbp' },
+          { name: 'Google Tag Manager', id: 'gtm' },
+          { name: 'Hubspot', id: 'hs' },
+          { name: 'Twitter', id: 'tw' },
+          { name: 'Wistia', id: 'ws' },
+        ];
+
+        const url = new URL(location.href);
+        const table = document.getElementById('services');
+        const debugMode = document.getElementById('debug-mode');
+        let includePartytownScript = false;
+
+        document.getElementById('user-agent').textContent = navigator.userAgent;
+        document.getElementById('cross-origin-isolated').textContent = String(
+          window.crossOriginIsolated
+        );
+
+        if (location.hostname !== 'localhost') {
+          const pageSpeed = document.getElementById('pagespeed');
+          const pageSpeedUrl = new URL('https://pagespeed.web.dev/report');
+          pageSpeedUrl.searchParams.set('url', location.href);
+          pageSpeed.href = pageSpeedUrl.href;
+          pageSpeed.hidden = false;
+        }
+
+        Array.from(document.querySelectorAll('button[data-type]')).forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const url = new URL(location.pathname, location.origin);
+            if (btn.dataset.type !== '') {
+              services.forEach((s) => {
+                url.searchParams.set(s.id, btn.dataset.type);
+              });
+            }
+            location = url.href;
+          });
+        });
+
+        function serviceChange() {
+          const url = new URL(location.pathname, location.origin);
+          const radios = document.querySelectorAll('input[type="radio"]');
+          Array.from(radios)
+            .filter((r) => r.checked && r.value !== '')
+            .forEach((radio) => {
+              url.searchParams.set(radio.name, radio.value);
+            });
+          if (debugMode.checked) {
+            url.searchParams.set('debug', 'true');
+          }
+          location = url.href;
+        }
+
+        services.forEach((service) => {
+          const tr = document.createElement('tr');
+
+          const tdName = document.createElement('td');
+          tdName.textContent = service.name;
+          tr.appendChild(tdName);
+
+          function addInput(value) {
+            const td = document.createElement('td');
+            const label = document.createElement('label');
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = service.id;
+            radio.value = value;
+            radio.setAttribute('aria-label', service.name);
+
+            if (url.searchParams.get(service.id) === value) {
+              radio.checked = true;
+            } else if (value === '' && !url.searchParams.has(service.id)) {
+              radio.checked = true;
+            }
+
+            if (radio.checked && value !== '') {
+              const script = document.createElement('script');
+              script.dataset.id = service.id;
+              const template = document.getElementById(service.id);
+              script.innerHTML = template.content.querySelector('script').innerHTML;
+              if (radio.value === 'p') {
+                script.type = 'text/partytown';
+                includePartytownScript = true;
+              }
+              document.head.appendChild(script);
+            }
+
+            radio.addEventListener('change', serviceChange);
+            label.appendChild(radio);
+            td.appendChild(label);
+            tr.appendChild(td);
+          }
+
+          addInput('p');
+          addInput('s');
+          addInput('');
+
+          table.appendChild(tr);
+        });
+
+        debugMode.checked = url.searchParams.has('debug');
+        debugMode.addEventListener('change', serviceChange);
+
+        if (includePartytownScript) {
+          const partytownScript = document.createElement('script');
+          partytownScript.dataset.id = 'partytown';
+          const template = document.getElementById('partytown');
+          partytownScript.innerHTML = template.content.querySelector('script').innerHTML;
+          document.head.appendChild(partytownScript);
+        }
+      })();
+    </script>
+  </body>
+</html>
